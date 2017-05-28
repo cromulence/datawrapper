@@ -19,6 +19,7 @@ allprojects {
     apply plugin: 'java'
     apply plugin: 'eclipse'
     apply plugin: 'idea'
+    apply plugin: 'maven'
 
     //apply plugin: 'com.jfrog.artifactory'
 
@@ -170,4 +171,10 @@ def releaseDate() {
 
 def tagName() {
     System.getenv("TRAVIS_TAG")
+}
+
+model {
+  tasks.generatePomFileForMavenPublication {
+    destination = file("$buildDir/libs/bintray-demo-1.0.0.pom")
+  }
 }
