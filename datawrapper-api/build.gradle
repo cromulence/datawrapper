@@ -1,0 +1,6 @@
+apply plugin: 'java'
+
+dependencies {
+    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'net.cromulence:object-translator:1.9.2'
+}
