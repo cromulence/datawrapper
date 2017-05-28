@@ -1,0 +1,12 @@
+rootProject.name = 'datawrapper'
+
+// common classes and interfaces
+include ':datawrapper-api'
+
+// Specific types of datastore connectors
+
+include ':implementations:hashmap'
+include ':implementations:httpsession'
+include ':implementations:mongo'
+include ':implementations:postgres'
+include ':implementations:properties'

@@ -1,0 +1,173 @@
+import java.text.SimpleDateFormat
+
+version='0.2.1-SNAPSHOT'
+
+ext.gavGroup = 'net.cromulence.datawrapper'
+
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.+"
+    }
+}
+
+allprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    apply plugin: 'idea'
+
+    //apply plugin: 'com.jfrog.artifactory'
+
+    //apply plugin: 'nebula.lint'
+
+    group = gavGroup
+    //gradleLint.rules = ['all-dependency'] // add as many rules here as you'd like
+    //gradleLint.rules = ['unused-dependency'] // add as many rules here as you'd like
+}
+
+//artifactoryPublish.skip = true
+
+subprojects {
+    apply plugin: 'maven-publish'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    project.version = rootProject.version
+
+    compileJava {
+        options.debug = true
+        options.debugOptions.debugLevel = "source,lines,vars"
+        options.encoding = 'UTF-8'
+    }
+    compileTestJava {
+        options.debugOptions.debugLevel = "source,lines,vars"
+    }
+    javadoc {
+        options.encoding = 'UTF-8'
+        options.encoding = 'UTF-8'
+    }
+
+    // Clean Eclipse output directory as the Eclipse plugin does not do this by default
+    clean.doFirst {
+        delete 'bin'
+    }
+
+    compileJava.options.debug = true
+    compileJava.options.debugOptions.debugLevel = "source,lines,vars"
+    compileTestJava.options.debugOptions.debugLevel = "source,lines,vars"
+    compileJava.options.encoding = 'UTF-8'
+
+    eclipse {
+        classpath {
+            downloadJavadoc = true
+        downloadSources = true
+        }
+    }
+
+    //assert project.hasProperty('artifactoryUsername') && project.hasProperty('artifactoryPassword') :'Please set your Artifactory credentials in your ~/.gradle/gradle.properties file:\nartifactoryUsername=<username>\nartifactoryPassword=<password>\n\n'
+
+    //def repoCreds = {username=property("artifactoryUsername"); password=property("artifactoryPassword")}
+    //def repoTypes = ["snapshots", "releases"]
+
+    repositories {
+        mavenLocal()
+        jcenter()
+        maven {
+            url  "http://dl.bintray.com/cromulence/maven"
+
+        }
+    }
+    
+    test {
+        testLogging {
+            exceptionFormat 'full'
+            events 'skipped', 'failed'
+        }
+    }
+    if(System.env['JAVA_HOME'] == null){
+        throw new GradleException('JAVA_HOME not set')
+    }
+
+    if (project.plugins.hasPlugin('java')) {
+        configurations {
+            published
+        }
+
+        task sourceJar(type: Jar) {
+            from sourceSets.main.allSource
+            classifier = 'sources'
+        }
+        task javadocJar(type: Jar, dependsOn: javadoc) {
+            classifier = 'javadoc'
+            from javadoc.destinationDir
+        }
+        //artifactoryPublish {
+        //    dependsOn sourceJar, javadocJar, jar
+        //}
+        artifacts {
+            published sourceJar
+            published javadocJar
+            published jar
+        }
+    }
+}
+
+configurations {
+    published
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.12'
+}
+
+// artifactory was here
+
+task copyBintrayTemplate (type: Copy) {
+    from projectDir
+    into "${projectDir}/output"
+    include 'bintray.json.template'
+    rename { file -> 'bintray.json' }
+    expand (version: projectVersion(), date: releaseDate(), tag: tagName (), uploadPattern:"net/cromulence/datawrapper/${project.version}/\$1")
+}
+
+def projectVersion() {
+    if(System.getenv("TRAVIS_TAG") != null && System.getenv("TRAVIS_TAG").length() > 0) {
+        // we are building a tag on travis
+        String tagName = System.getenv("TRAVIS_TAG")
+
+        println "Travis tag build"
+
+        if(tagName.startsWith("${majorMinorVersion}")) {
+            //we're building a tag in line with the current expected version'
+            project.version = tagName
+            println "Travis tag build: version as expected ${project.version}"
+        } else {
+            // name is messed up
+            project.version = "${majorMinorVersion}.${tagName}"
+            println "Travis tag build: version not as expected: ${project.version}"
+        }
+    } else if(System.getenv("TRAVIS") != null && System.getenv("TRAVIS").length() > 0) {
+        // travis master build
+        project.version = "${majorMinorVersion}-SNAPSHOT"
+        println "Travis master build: ${project.version}"
+    } else {
+        //local build
+        project.version = "${majorMinorVersion}-SNAPSHOT"
+        println "Local build: ${project.version}"
+    }
+
+    return project.version
+}
+
+def releaseDate() {
+    new SimpleDateFormat("yyyy-MM-dd").format (new Date())
+}
+
+def tagName() {
+    System.getenv("TRAVIS_TAG")
+}

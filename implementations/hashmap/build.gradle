@@ -1,0 +1,6 @@
+apply plugin: 'java'
+
+dependencies {
+    compile project(':datawrapper-api')
+    compile 'org.slf4j:slf4j-api:1.7.21'
+}
