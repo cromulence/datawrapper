@@ -29,15 +29,17 @@ allprojects {
     group = gavGroup
     //gradleLint.rules = ['all-dependency'] // add as many rules here as you'd like
     //gradleLint.rules = ['unused-dependency'] // add as many rules here as you'd like
+
+  model {
+    tasks.generatePomFileForMavenPublication {
+      destination = file("$buildDir/libs/bintray-demo-1.0.0.pom")
+    }
+  }
 }
 
 //artifactoryPublish.skip = true
 
-model {
-  tasks.generatePomFileForMavenPublication {
-    destination = file("$buildDir/libs/bintray-demo-1.0.0.pom")
-  }
-}
+
 
 subprojects {
 
