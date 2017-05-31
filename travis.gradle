@@ -11,7 +11,7 @@ task copyBintrayTemplate (type: Copy) {
   into "${projectDir}/output"
   include 'bintray.json.template'
   rename { file -> 'bintray.json' }
-  expand (version: projectVersion(), date: releaseDate(), tag: tagName (), uploadPattern:"net/cromulence/datawrapper/${project.version}/\$1")
+  expand (version: projectVersion(), date: releaseDate(), tag: tagName (), uploadPattern:"net/cromulence/datawrapper/${project.version}/\$2")
 }
 
 def projectVersion() {
