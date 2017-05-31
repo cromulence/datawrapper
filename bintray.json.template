@@ -50,7 +50,7 @@
             "uploadPattern": "${uploadPattern}"
         },
         {
-            "includePattern" : "output/datawrapper-api/build/libs/(.*jar)",
+            "includePattern" : "  datawrapper-api/build/libs/(.*jar)",
             "uploadPattern": "${uploadPattern}"
         },
         {
