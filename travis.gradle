@@ -33,7 +33,7 @@ def projectVersion() {
     }
   } else if(System.getenv("TRAVIS") != null && System.getenv("TRAVIS").length() > 0) {
     // travis master build
-    project.version = "${majorMinorVersion}-SNAPSHOT"
+    project.version = "${majorMinorVersion}.1"
     println "Travis master build: ${project.version}"
   } else {
     //local build
