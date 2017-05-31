@@ -46,7 +46,7 @@
 
     "files": [
         {
-            "includePattern": "output\\/.*\\/build\\/libs\\/(.*jar)\$",
+            "includePattern": "output/(.*)/build/libs/(.*jar)\$",
             "uploadPattern": "${uploadPattern}"
         }
     ],
