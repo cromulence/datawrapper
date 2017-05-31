@@ -49,14 +49,22 @@
             "includePattern" : "datawrapper-api/build/libs/(.*jar)",
             "uploadPattern": "${uploadPattern}"
         },
-        {
-            "includePattern" : "implementations/httpsession/build/libs/(.*jar)",
-            "uploadPattern": "${uploadPattern}"
-        },
-        {
-            "includePattern" : "implementations/hashmap/build/libs/(.*jar)",
-            "uploadPattern": "${uploadPattern}"
-        }
+         {
+             "includePattern" : "implementations/httpsession/build/libs/(.*jar)",
+             "uploadPattern": "${uploadPattern}"
+         },
+         {
+             "includePattern" : "implementations/mongo/build/libs/(.*jar)",
+             "uploadPattern": "${uploadPattern}"
+         },
+          {
+              "includePattern" : "implementations/postgres/build/libs/(.*jar)",
+              "uploadPattern": "${uploadPattern}"
+          },
+          {
+              "includePattern" : "implementations/properties/build/libs/(.*jar)",
+              "uploadPattern": "${uploadPattern}"
+          }
     ],
     "publish": true
 }
