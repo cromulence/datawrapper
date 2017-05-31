@@ -46,19 +46,15 @@
 
     "files": [
         {
-            "includePattern": ".*/build/libs/(.*jar)\$",
+            "includePattern" : "datawrapper-api/build/libs/(.*jar)",
             "uploadPattern": "${uploadPattern}"
         },
         {
-            "includePattern" : "foo.datawrapper-api/build/libs/(.*jar)",
+            "includePattern" : "implementations/httpsession/build/libs/(.*jar)",
             "uploadPattern": "${uploadPattern}"
         },
         {
-            "includePattern" : "output/implementations/httpsession/build/libs/(.*jar)",
-            "uploadPattern": "${uploadPattern}"
-        },
-        {
-            "includePattern" : "output/implementations/hashmap/build/libs/(.*jar)",
+            "includePattern" : "implementations/hashmap/build/libs/(.*jar)",
             "uploadPattern": "${uploadPattern}"
         }
     ],
