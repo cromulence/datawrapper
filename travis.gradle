@@ -1,4 +1,5 @@
 import java.text.SimpleDateFormat
+import groovy.io.FileType
 
 model {
   tasks.generatePomFileForMavenPublication {
