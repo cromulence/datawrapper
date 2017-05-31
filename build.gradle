@@ -1,7 +1,3 @@
-import java.text.SimpleDateFormat
-
-version='0.2.1-SNAPSHOT'
-
 ext.gavGroup = 'net.cromulence.datawrapper'
 
 buildscript {
@@ -14,6 +10,8 @@ buildscript {
         classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.+"
     }
 }
+
+apply from: 'travis.gradle'
 
 allprojects {
 
@@ -50,12 +48,6 @@ allprojects {
 }
 
 //artifactoryPublish.skip = true
-
-model {
-  tasks.generatePomFileForMavenPublication {
-    destination = file("$buildDir/libs/bintray-demo-1.0.0.pom")
-  }
-}
 
 subprojects {
 
@@ -152,47 +144,3 @@ task wrapper(type: Wrapper) {
 
 // artifactory was here
 
-task copyBintrayTemplate (type: Copy) {
-    from projectDir
-    into "${projectDir}/output"
-    include 'bintray.json.template'
-    rename { file -> 'bintray.json' }
-    expand (version: projectVersion(), date: releaseDate(), tag: tagName (), uploadPattern:"net/cromulence/datawrapper/${project.version}/\$1")
-}
-
-def projectVersion() {
-    if(System.getenv("TRAVIS_TAG") != null && System.getenv("TRAVIS_TAG").length() > 0) {
-        // we are building a tag on travis
-        String tagName = System.getenv("TRAVIS_TAG")
-
-        println "Travis tag build"
-
-        if(tagName.startsWith("${majorMinorVersion}")) {
-            //we're building a tag in line with the current expected version'
-            project.version = tagName
-            println "Travis tag build: version as expected ${project.version}"
-        } else {
-            // name is messed up
-            project.version = "${majorMinorVersion}.${tagName}"
-            println "Travis tag build: version not as expected: ${project.version}"
-        }
-    } else if(System.getenv("TRAVIS") != null && System.getenv("TRAVIS").length() > 0) {
-        // travis master build
-        project.version = "${majorMinorVersion}-SNAPSHOT"
-        println "Travis master build: ${project.version}"
-    } else {
-        //local build
-        project.version = "${majorMinorVersion}-SNAPSHOT"
-        println "Local build: ${project.version}"
-    }
-
-    return project.version
-}
-
-def releaseDate() {
-    new SimpleDateFormat("yyyy-MM-dd").format (new Date())
-}
-
-def tagName() {
-    System.getenv("TRAVIS_TAG")
-}
