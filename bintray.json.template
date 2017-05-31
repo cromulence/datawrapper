@@ -48,6 +48,18 @@
         {
             "includePattern": "output/(.*)/build/libs/(.*jar)\$",
             "uploadPattern": "${uploadPattern}"
+        },
+        {
+            "includePattern" : "output/datawrapper-api/build/libs/(.*jar)",
+            "uploadPattern": "${uploadPattern}"
+        },
+        {
+            "includePattern" : "output/implementations/httpsession/build/libs/(.*jar)",
+            "uploadPattern": "${uploadPattern}"
+        },
+        {
+            "includePattern" : "output/implementations/hashmap/build/libs/(.*jar)",
+            "uploadPattern": "${uploadPattern}"
         }
     ],
     "publish": true
