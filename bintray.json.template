@@ -46,11 +46,11 @@
 
     "files": [
         {
-            "includePattern": "output/(.*)/build/libs/(.*jar)\$",
+            "includePattern": "(.*)/build/libs/(.*jar)\$",
             "uploadPattern": "${uploadPattern}"
         },
         {
-            "includePattern" : "datawrapper-api/build/libs/(.*jar)",
+            "includePattern" : "foo.datawrapper-api/build/libs/(.*jar)",
             "uploadPattern": "${uploadPattern}"
         },
         {
