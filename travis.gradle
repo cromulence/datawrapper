@@ -49,5 +49,22 @@ def releaseDate() {
 }
 
 def tagName() {
-  System.getenv("TRAVIS_TAG")
+  listDir()
+  return System.getenv("TRAVIS_TAG")
+}
+
+def listDir() {
+
+  def list = []
+
+  def dir = new File(".")
+  dir.eachFileRecurse(FileType.FILES) { file ->
+    list << file
+  }
+
+
+  list.each {
+    println it.path
+  }
+
 }
