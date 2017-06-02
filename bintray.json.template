@@ -45,26 +45,7 @@
     Note: Regular expressions defined as part of the includePattern property must be wrapped with brackets. */
 
     "files": [
-        {
-            "includePattern" : "datawrapper-api/build/libs/(.*jar)",
-            "uploadPattern": "${uploadPattern}"
-        },
-         {
-             "includePattern" : "implementations/httpsession/build/libs/(.*jar)",
-             "uploadPattern": "${uploadPattern}"
-         },
-         {
-             "includePattern" : "implementations/mongo/build/libs/(.*jar)",
-             "uploadPattern": "${uploadPattern}"
-         },
-          {
-              "includePattern" : "implementations/postgres/build/libs/(.*jar)",
-              "uploadPattern": "${uploadPattern}"
-          },
-          {
-              "includePattern" : "implementations/properties/build/libs/(.*jar)",
-              "uploadPattern": "${uploadPattern}"
-          }
+        ${files}
     ],
     "publish": true
 }

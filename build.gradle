@@ -11,8 +11,6 @@ buildscript {
     }
 }
 
-apply from: 'travis.gradle'
-
 allprojects {
 
     apply plugin: 'java'
@@ -20,6 +18,7 @@ allprojects {
     apply plugin: 'idea'
     apply plugin: 'maven'
     apply plugin: 'maven-publish'
+    apply plugin: 'checkstyle'
   
     //apply plugin: 'com.jfrog.artifactory'
 
@@ -28,6 +27,11 @@ allprojects {
     group = gavGroup
     //gradleLint.rules = ['all-dependency'] // add as many rules here as you'd like
     //gradleLint.rules = ['unused-dependency'] // add as many rules here as you'd like
+
+  checkstyle {
+    ignoreFailures = true
+    configFile = rootProject.file('config/checkstyle/checkstyle.xml')
+  }
 
   publishing {
     publications {
@@ -46,6 +50,8 @@ allprojects {
     }
   }
 }
+
+apply from: 'travis.gradle'
 
 //artifactoryPublish.skip = true
 

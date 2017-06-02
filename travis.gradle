@@ -1,6 +1,46 @@
 import java.text.SimpleDateFormat
 import groovy.io.FileType
 
+task javadocJar(type: Jar, dependsOn: javadoc) {
+  classifier = 'javadoc'
+  from 'build/docs/javadoc'
+  manifest {
+    attributes("Implementation-Title": project.name,
+        "Implementation-Version": projectVersion(),
+        "SCM-Revision": gitRevision()
+    )
+  }
+}
+
+task sourcesJar(type: Jar) {
+  classifier = 'sources'
+  from sourceSets.main.allSource
+  manifest {
+    attributes("Implementation-Title": project.name,
+        "Implementation-Version": projectVersion(),
+        "SCM-Revision": gitRevision()
+    )
+  }
+}
+
+subprojects {
+  jar {
+    //TODO: Share the source and binary manifest code!!! so changes are done in one place
+    manifest {
+      attributes("Implementation-Title": project.name,
+          "Implementation-Version": projectVersion(),
+          "SCM-Revision": gitRevision()
+      )
+    }
+  }
+
+  artifacts {
+    archives jar
+    archives javadocJar
+    archives sourcesJar
+  }
+}
+
 model {
   tasks.generatePomFileForMavenPublication {
     destination = file("$buildDir/libs/bintray-demo-1.0.0.pom")
@@ -12,7 +52,32 @@ task copyBintrayTemplate (type: Copy) {
   into "${projectDir}/output"
   include 'bintray.json.template'
   rename { file -> 'bintray.json' }
-  expand (version: projectVersion(), date: releaseDate(), tag: tagName (), uploadPattern:"net/cromulence/datawrapper/${project.version}/\$1")
+  expand (version: projectVersion(), date: releaseDate(), tag: tagName (), files:filesToUpload())
+}
+
+def filesToUpload() {
+  def uploadPattern = gavToPath() + "${project.version}/\$1"
+
+  def sourceProjects = subprojects.findAll()
+
+  StringBuffer sb = new StringBuffer()
+
+  for(Project p : sourceProjects) {
+    sb.append("{\"includePattern\" : \"").append(p.getPath().substring(1).replaceAll(":", "/")).append("/build/libs/(.*jar)\",\"uploadPattern\": \"").append(uploadPattern).append("\"},\n")
+    sb.append("{\"includePattern\" : \"").append(p.getPath().substring(1).replaceAll(":", "/")).append("/build/publications/maven/(.*xml)\",\"uploadPattern\": \"").append(uploadPattern).append("\"},\n")
+  }
+
+  // remove last comma
+  sb.deleteCharAt(sb.length() - 1)
+  sb.deleteCharAt(sb.length() - 1)
+  sb.append("\n")
+
+  return sb.toString()
+}
+
+def gavToPath() {
+  // TODO get GAV
+  return "net/cromulence/datawrapper/"
 }
 
 def projectVersion() {
@@ -69,3 +134,10 @@ def listDir() {
   }
 
 }
+
+def gitRevision() {
+  def git_cmd = "git rev-parse HEAD"
+  def git_proc = git_cmd.execute()
+  return git_proc.text.trim()
+}
+
