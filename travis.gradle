@@ -56,7 +56,7 @@ task copyBintrayTemplate (type: Copy) {
 }
 
 def filesToUpload() {
-  def uploadPattern = gavToPath() + "${project.version}/\$1"
+  def uploadPattern = gavToPath() + "${project.name}/${project.version}/\$1"
 
   def sourceProjects = subprojects.findAll()
 
