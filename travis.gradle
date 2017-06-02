@@ -39,11 +39,11 @@ subprojects {
     archives javadocJar
     archives sourcesJar
   }
-}
 
-model {
-  tasks.generatePomFileForMavenPublication {
-    destination = file("$buildDir/libs/bintray-demo-1.0.0.pom")
+  model {
+    tasks.generatePomFileForMavenPublication {
+      destination = file("$buildDir/libs/" + project.getName() + "-" + projectVersion() + ".pom")
+    }
   }
 }
 
