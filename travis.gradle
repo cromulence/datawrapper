@@ -56,13 +56,13 @@ task copyBintrayTemplate (type: Copy) {
 }
 
 def filesToUpload() {
-  def uploadPattern = gavToPath() + "${project.name}/${project.version}/\$1"
 
   def sourceProjects = subprojects.findAll()
 
   StringBuffer sb = new StringBuffer()
 
   for(Project p : sourceProjects) {
+    def uploadPattern = gavToPath() + "${p.getName()}/${project.version}/\$1"
     sb.append("{\"includePattern\" : \"").append(p.getPath().substring(1).replaceAll(":", "/")).append("/build/libs/(.*jar)\",\"uploadPattern\": \"").append(uploadPattern).append("\"},\n")
     sb.append("{\"includePattern\" : \"").append(p.getPath().substring(1).replaceAll(":", "/")).append("/build/libs/(.*pom)\",\"uploadPattern\": \"").append(uploadPattern).append("\"},\n")
   }
