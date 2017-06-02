@@ -64,7 +64,7 @@ def filesToUpload() {
 
   for(Project p : sourceProjects) {
     sb.append("{\"includePattern\" : \"").append(p.getPath().substring(1).replaceAll(":", "/")).append("/build/libs/(.*jar)\",\"uploadPattern\": \"").append(uploadPattern).append("\"},\n")
-    sb.append("{\"includePattern\" : \"").append(p.getPath().substring(1).replaceAll(":", "/")).append("/build/publications/maven/(.*xml)\",\"uploadPattern\": \"").append(uploadPattern).append("\"},\n")
+    sb.append("{\"includePattern\" : \"").append(p.getPath().substring(1).replaceAll(":", "/")).append("/build/libs/(.*pom)\",\"uploadPattern\": \"").append(uploadPattern).append("\"},\n")
   }
 
   // remove last comma
