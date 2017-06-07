@@ -1,13 +1,15 @@
-ext.gavGroup = 'net.cromulence.datawrapper'
-
 buildscript {
     repositories {
         mavenLocal()
         jcenter()
         mavenCentral()
+        maven {
+          url  "http://dl.bintray.com/cromulence/maven"
+        }
     }
     dependencies {
         classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.+"
+        classpath "net.cromulence.buildsystem.gradle:travis-bintray:+"
     }
 }
 
@@ -16,11 +18,9 @@ allprojects {
     apply plugin: 'java'
     apply plugin: 'eclipse'
     apply plugin: 'idea'
-    apply plugin: 'maven'
-    apply plugin: 'maven-publish'
     apply plugin: 'checkstyle'
-  
-    //apply plugin: 'com.jfrog.artifactory'
+    apply plugin: 'travis-bintray'
+    apply plugin: 'maven'
 
     //apply plugin: 'nebula.lint'
 
@@ -33,27 +33,7 @@ allprojects {
     configFile = rootProject.file('config/checkstyle/checkstyle.xml')
   }
 
-  publishing {
-    publications {
-      maven(MavenPublication) {
-        from components.java
-        pom.withXml {
-          asNode().dependencies.'*'.findAll() {
-            it.scope.text() == 'runtime' && project.configurations.compile.allDependencies.find { dep ->
-              dep.name == it.artifactId.text()
-            }
-          }.each() {
-            it.scope*.value = 'compile'
-          }
-        }
-      }
-    }
-  }
 }
-
-apply from: 'travis.gradle'
-
-//artifactoryPublish.skip = true
 
 subprojects {
 
@@ -92,17 +72,11 @@ subprojects {
         }
     }
 
-    //assert project.hasProperty('artifactoryUsername') && project.hasProperty('artifactoryPassword') :'Please set your Artifactory credentials in your ~/.gradle/gradle.properties file:\nartifactoryUsername=<username>\nartifactoryPassword=<password>\n\n'
-
-    //def repoCreds = {username=property("artifactoryUsername"); password=property("artifactoryPassword")}
-    //def repoTypes = ["snapshots", "releases"]
-
     repositories {
         mavenLocal()
         jcenter()
         maven {
             url  "http://dl.bintray.com/cromulence/maven"
-
         }
     }
     
@@ -120,23 +94,6 @@ subprojects {
         configurations {
             published
         }
-
-        task sourceJar(type: Jar) {
-            from sourceSets.main.allSource
-            classifier = 'sources'
-        }
-        task javadocJar(type: Jar, dependsOn: javadoc) {
-            classifier = 'javadoc'
-            from javadoc.destinationDir
-        }
-        //artifactoryPublish {
-        //    dependsOn sourceJar, javadocJar, jar
-        //}
-        artifacts {
-            published sourceJar
-            published javadocJar
-            published jar
-        }
     }
 }
 
@@ -147,6 +104,3 @@ configurations {
 task wrapper(type: Wrapper) {
     gradleVersion = '2.12'
 }
-
-// artifactory was here
-
