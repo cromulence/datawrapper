@@ -18,7 +18,7 @@ deploy:
 - provider: bintray
   on:
     tags: true
-  file: output/bintray.json
+  file: build/bintray.json
   user: cromulence
   key:
     secure: DSdOofeDz6f0yD6kaReUymAJpOtwu3HZVVQtbIE2dswZTrhmWKULVr4jSB+gtdbGhLEmR+c9+BBB4eukNeo2dg6SlP1U4j/xl+GMwrxEl9COzTuBhmbEUL4dHhJ0ODTH083klVs0Q2R74bao14W7FaMLdJpMmD9W03DjKMNLte7t3ZipScQ+9UdcKi79XullqpjX73fgMf73v3JO7H1sJA1gtFrN/68C5wCY/FsbJmIGvDAg8/F7PXDAOUUZX5DMqSnNN0is6twbTS0TAlXC5yNxF3Pnc/jrgei1W5qMEXStYLJomKa5RYqaO3f6D6AqqpbtHe5SEuYkyxo8AX1xiIL+7LlzWxhtaOVM12d8WKpsYvL/LnKTmwPFhJ3atqgleRcqN46lrSWzT3njrwBkgYqLAkgw9WtrWW+StVCLgYZeSNDrwWgimzvE1MWx3QcbGcgJMCkVPMgnR70e9TKkXoIS6S8YWQzpTLKZ5zUA0dtZksRTMZeeh8H+AvX3mAaVOIw0I10pbd5v4edbgJy4Tkd9Q4cQagPAwQuy4SDhKwu0gPPku+R6URh3O75SzxcL2pbajksTw3j+m7ZR+RfTLac5W6bXIDKAIG4pEc2Ln+6QTfRzrN5oZkrOzcXg+JLBySuB9w32SE+By0kdb7IUBogRKBPgByeC/UUXzWvLrhc=
