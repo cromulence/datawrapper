@@ -50,6 +50,13 @@ public interface DataWrapper {
     void commit() throws DataWrapperException;
 
     /**
+     * Remove the specified value.
+     * @param name The key to remove
+     * @throws DataWrapperException Any exception during remove
+     */
+    void remove(String name) throws DataWrapperException;
+
+    /**
      * Retrieve a String value
      * @param name The name of the value to retrieve
      * @return The value

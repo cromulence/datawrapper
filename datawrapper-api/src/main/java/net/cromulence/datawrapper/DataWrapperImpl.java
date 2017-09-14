@@ -41,6 +41,11 @@ public class DataWrapperImpl implements DataWrapper {
     }
 
     @Override
+    public void remove(String name) throws DataWrapperException {
+        delegate.remove(name);
+    }
+
+    @Override
     public String getPrefix() {
         return prefix;
     }
@@ -417,12 +422,21 @@ public class DataWrapperImpl implements DataWrapper {
             connector.commit();
         }
 
+        @Override
+        public void remove(String name) throws DataWrapperException {
+            doRemove(name);
+        }
+
         private <T> T doGet(String name, Class<T> clazz) {
             return connector.get(name, clazz);
         }
 
         private void doPut(String name, Object value) {
             connector.put(name, value);
+        }
+
+        private void doRemove(String name) {
+            connector.remove(name);
         }
 
         @Override
