@@ -1,14 +1,15 @@
 package net.cromulence.datawrapper.mongo;
 
-import net.cromulence.datawrapper.DataWrapperImpl;
+import net.cromulence.datawrapper.document.DocumentDataWrapperImpl;
 
 /**
  * Mongo-based wrapper. Adds some extra methods which allow manipulation of
  * stored data in a document-aware manner. It is still possible to use Mongo
  * within a regular DataWrapperImpl, but some of the features of Mongo are
  * unavailable like this
+ * @deprecated
  */
-public class MongoDataWrapperImpl extends DataWrapperImpl {
+public class MongoDataWrapperImpl extends DocumentDataWrapperImpl {
 
     public MongoDataWrapperImpl(MongoDataStoreConnector dataStore) {
         super(dataStore);
@@ -18,13 +19,4 @@ public class MongoDataWrapperImpl extends DataWrapperImpl {
     public MongoDataStoreConnector getConnector() {
         return (MongoDataStoreConnector) super.getConnector();
     }
-
-    public void put(String objectName, String name, Object value) {
-        getConnector().put(objectName, name, value);
-    }
-
-    public void remove(String objectName, String name) {
-        getConnector().remove(objectName, name);
-    }
-
 }

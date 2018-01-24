@@ -1,36 +1,43 @@
 package net.cromulence.datawrapper.mongo;
 
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Updates.set;
+import static com.mongodb.client.model.Updates.unset;
+
 import com.google.gson.Gson;
-import com.mongodb.*;
+import com.mongodb.Block;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
+import com.mongodb.MongoCredential;
+import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.result.UpdateResult;
 import com.mongodb.util.JSON;
 
-import net.cromulence.datawrapper.AbstractDataStoreConnector;
+import net.cromulence.datawrapper.document.AbstractDocumentDataStoreConnector;
 
 import org.bson.BsonReader;
 import org.bson.BsonWriter;
 import org.bson.Document;
-import org.bson.codecs.*;
+import org.bson.codecs.Codec;
+import org.bson.codecs.DecoderContext;
+import org.bson.codecs.DocumentCodec;
+import org.bson.codecs.EncoderContext;
 import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Updates.set;
-import static com.mongodb.client.model.Updates.unset;
-
-public class MongoDataStoreConnector extends AbstractDataStoreConnector {
+public class MongoDataStoreConnector extends AbstractDocumentDataStoreConnector {
 
     private static Logger LOG = LoggerFactory.getLogger(MongoDataStoreConnector.class);
-
-    private Mongo mongo;
 
     private MongoDatabase database;
 
@@ -94,11 +101,22 @@ public class MongoDataStoreConnector extends AbstractDataStoreConnector {
 
     @Override
     public Object get(String name) {
-        return get(name, Object.class);
+        return get(objectName, name, Object.class);
+    }
+
+    @Override
+    public Object get(String objectName, String name) {
+        return get(objectName, name, Object.class);
     }
 
     @Override
     public <T> T get(final String name, final Class<T> clazz) {
+        return get(objectName, name, clazz);
+    }
+
+    public <T> T get(String objectName, final String name, final Class<T> clazz) {
+        // Mongo does its own casting, so we can override this
+
         LOG.debug("get(Str): key[" + name + "]");
 
         MongoCollection<Document> collection = database.getCollection(collectionName);
