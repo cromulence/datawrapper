@@ -52,9 +52,8 @@ public interface DataWrapper {
     /**
      * Remove the specified value.
      * @param name The key to remove
-     * @throws DataWrapperException Any exception during remove
      */
-    void remove(String name) throws DataWrapperException;
+    void remove(String name);
 
     /**
      * Retrieve a String value

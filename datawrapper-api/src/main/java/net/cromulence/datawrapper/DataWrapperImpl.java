@@ -41,7 +41,7 @@ public class DataWrapperImpl implements DataWrapper {
     }
 
     @Override
-    public void remove(String name) throws DataWrapperException {
+    public void remove(String name) {
         delegate.remove(name);
     }
 
@@ -423,7 +423,7 @@ public class DataWrapperImpl implements DataWrapper {
         }
 
         @Override
-        public void remove(String name) throws DataWrapperException {
+        public void remove(String name) {
             doRemove(name);
         }
 
