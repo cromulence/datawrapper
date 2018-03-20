@@ -366,12 +366,12 @@ public class DataWrapperImpl implements DataWrapper {
     }
 
     @Override
-    public <T> T getObject(String name, Class<T> clazz, Object defaultValue) {
+    public <T> T getObject(String name, Class<T> clazz, T defaultValue) {
         return delegate.getObject(getPrefixedName(name), clazz, defaultValue);
     }
 
     @Override
-    public <T> T getOrInsertObject(String name, Class<T> clazz, Object defaultValue) {
+    public <T> T getOrInsertObject(String name, Class<T> clazz, T defaultValue) {
         return delegate.getOrInsertObject(getPrefixedName(name), clazz, defaultValue);
     }
 
@@ -381,12 +381,12 @@ public class DataWrapperImpl implements DataWrapper {
     }
 
     @Override
-    public <T> T[] getObjectArray(String name, Class<T> clazz, Object[] defaultValue) {
+    public <T> T[] getObjectArray(String name, Class<T> clazz, T[] defaultValue) {
         return delegate.getObjectArray(getPrefixedName(name), clazz, defaultValue);
     }
 
     @Override
-    public <T> T[] getOrInsertObjectArray(String name, Class<T> clazz, Object[] defaultValue) {
+    public <T> T[] getOrInsertObjectArray(String name, Class<T> clazz, T[] defaultValue) {
         return delegate.getOrInsertObjectArray(getPrefixedName(name), clazz, defaultValue);
     }
 
@@ -463,7 +463,7 @@ public class DataWrapperImpl implements DataWrapper {
                 putString(name, defaultValue);
             }
 
-            return getString(name);
+            return defaultValue;
         }
 
         @Override
@@ -495,7 +495,7 @@ public class DataWrapperImpl implements DataWrapper {
                 putStringArray(name, defaultValue);
             }
 
-            return getStringArray(name);
+            return defaultValue;
         }
 
         @Override
@@ -551,7 +551,8 @@ public class DataWrapperImpl implements DataWrapper {
             if (insert) {
                 putBoolean(name, defaultValue);
             }
-            return getBoolean(name);
+
+            return defaultValue;
         }
 
         @Override
@@ -637,7 +638,7 @@ public class DataWrapperImpl implements DataWrapper {
                 putInteger(name, defaultValue);
             }
 
-            return getInteger(name);
+            return defaultValue;
         }
 
         @Override
@@ -731,7 +732,7 @@ public class DataWrapperImpl implements DataWrapper {
                 putLong(name, defaultValue);
             }
 
-            return getLong(name);
+            return defaultValue;
         }
 
         @Override
@@ -825,7 +826,7 @@ public class DataWrapperImpl implements DataWrapper {
                 putDouble(name, defaultValue);
             }
 
-            return getDouble(name);
+            return defaultValue;
         }
 
         @Override
@@ -919,7 +920,7 @@ public class DataWrapperImpl implements DataWrapper {
                 putObject(name, defaultValue);
             }
 
-            return getObject(name);
+            return defaultValue;
         }
 
         @Override
@@ -951,7 +952,7 @@ public class DataWrapperImpl implements DataWrapper {
                 putObjectArray(name, defaultValue);
             }
 
-            return getObjectArray(name);
+            return defaultValue;
         }
 
         @Override
@@ -990,16 +991,16 @@ public class DataWrapperImpl implements DataWrapper {
         }
 
         @Override
-        public <T> T getObject(String name, Class<T> clazz, Object defaultValue) {
+        public <T> T getObject(String name, Class<T> clazz, T defaultValue) {
             return doGetObject(name, clazz, defaultValue, false);
         }
 
         @Override
-        public <T> T getOrInsertObject(String name, Class<T> clazz, Object defaultValue) {
+        public <T> T getOrInsertObject(String name, Class<T> clazz, T defaultValue) {
             return doGetObject(name, clazz, defaultValue, true);
         }
 
-        private <T> T doGetObject(String name, Class<T> clazz, Object defaultValue, boolean insert) {
+        private <T> T doGetObject(String name, Class<T> clazz, T defaultValue, boolean insert) {
             if (contains(name)) {
                 return getObject(name, clazz);
             }
@@ -1008,7 +1009,7 @@ public class DataWrapperImpl implements DataWrapper {
                 putObject(name, defaultValue);
             }
 
-            return getObject(name, clazz);
+            return defaultValue;
         }
 
         @Override
@@ -1023,16 +1024,16 @@ public class DataWrapperImpl implements DataWrapper {
         }
 
         @Override
-        public <T> T[] getObjectArray(String name, Class<T> clazz, Object[] defaultValue) {
+        public <T> T[] getObjectArray(String name, Class<T> clazz, T[] defaultValue) {
             return doGetObjectArray(name, clazz, defaultValue, false);
         }
 
         @Override
-        public <T> T[] getOrInsertObjectArray(String name, Class<T> clazz, Object[] defaultValue) {
+        public <T> T[] getOrInsertObjectArray(String name, Class<T> clazz, T[] defaultValue) {
             return doGetObjectArray(name, clazz, defaultValue, true);
         }
 
-        private <T> T[] doGetObjectArray(String name, Class<T> clazz, Object[] defaultValue, boolean insert) {
+        private <T> T[] doGetObjectArray(String name, Class<T> clazz, T[] defaultValue, boolean insert) {
             if (contains(name)) {
                 return getObjectArray(name, clazz);
             }
@@ -1041,7 +1042,7 @@ public class DataWrapperImpl implements DataWrapper {
                 putObjectArray(name, defaultValue);
             }
 
-            return getObjectArray(name, clazz);
+            return defaultValue;
         }
     }
 }

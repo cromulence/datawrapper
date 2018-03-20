@@ -224,13 +224,13 @@ public interface DataWrapper {
 
     <T> T getObject(String name, Class<T> clazz);
 
-    <T> T  getObject(String name, Class<T> clazz, Object defaultValue);
+    <T> T  getObject(String name, Class<T> clazz, T defaultValue);
 
-    <T> T getOrInsertObject(String name, Class<T> clazz, Object defaultValue);
+    <T> T getOrInsertObject(String name, Class<T> clazz, T defaultValue);
 
     <T> T[] getObjectArray(String name, Class<T> clazz);
 
-    <T> T[] getObjectArray(String name, Class<T> clazz, Object[] defaultValue);
+    <T> T[] getObjectArray(String name, Class<T> clazz, T[] defaultValue);
 
-    <T> T[] getOrInsertObjectArray(String name, Class<T> clazz, Object[] defaultValue);
+    <T> T[] getOrInsertObjectArray(String name, Class<T> clazz, T[] defaultValue);
 }
