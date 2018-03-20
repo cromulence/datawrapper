@@ -18,6 +18,7 @@ deploy:
 - provider: bintray
   on:
     tags: true
+  skip_cleanup: true
   file: build/bintray.json
   user: cromulence
   key:
