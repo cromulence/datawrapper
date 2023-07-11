@@ -1,7 +1,7 @@
 apply plugin: 'java'
 
 dependencies {
-    compile project(':datawrapper-api')
-    compile 'org.slf4j:slf4j-api:1.7.21'
-    compileOnly 'javax.servlet:javax.servlet-api:3.0.1'
+    implementation project(':datawrapper-api')
+    implementation 'org.slf4j:slf4j-api:1.7.21'
+    implementation 'javax.servlet:javax.servlet-api:3.0.1'
 }

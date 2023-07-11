@@ -1,8 +1,8 @@
 apply plugin: 'java'
 
 dependencies {
-    compile project(':datawrapper-api')
-    compile 'org.slf4j:slf4j-api:1.7.21'
-    compile 'com.google.code.gson:gson:2.2.4'
-    compile 'com.amazonaws:aws-java-sdk-dynamodb:1.11.237'
+    implementation project(':datawrapper-api')
+    implementation 'org.slf4j:slf4j-api:1.7.21'
+    implementation 'com.google.code.gson:gson:2.2.4'
+    implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.11.237'
 }

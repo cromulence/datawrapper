@@ -1,42 +1,45 @@
 buildscript {
     repositories {
         mavenLocal()
-        jcenter()
         mavenCentral()
-        maven {
-          url "artifactregistry://europe-west2.maven.pkg.dev/cromulence/maven"
-        }
-
     }
     dependencies {
-        classpath "net.cromulence.buildsystem.gradle:travis-bintray:+"
+        classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.11.0'
+        classpath 'gradle.plugin.co.riiid:gradle-github-plugin:0.4.2'   
     }
 }
 
-    //plugins loaded from special gradle plugin repo...
-    plugins {
-        //google "gradle build scan" or https://github.com/gradle/gradle-build-scan-quickstart
-        // essentially, ./gradlew build -Dscan
-        id 'com.gradle.build-scan' version '1.0' //google "gradle build scan"
-        id "com.google.cloud.artifactregistry.gradle-plugin" version "2.2.0"
-    }
-
-
+plugins {
+    //google "gradle build scan" or https://github.com/gradle/gradle-build-scan-quickstart
+    // essentially, ./gradlew build -Dscan
+    id 'com.gradle.build-scan' version '1.0' //google "gradle build scan"
+    id "com.google.cloud.artifactregistry.gradle-plugin" version "2.2.0"
+}
 
 allprojects {
-  
-    //plugins loaded from special gradle plugin repo...
-    plugins {
-        //google "gradle build scan" or https://github.com/gradle/gradle-build-scan-quickstart
-        // essentially, ./gradlew build -Dscan
-        id 'com.gradle.build-scan' version '1.0' //google "gradle build scan"
-        id "com.google.cloud.artifactregistry.gradle-plugin" version "2.2.0"
-    }
 
     apply plugin: 'java'
+    apply plugin: 'eclipse'
     apply plugin: 'idea'
-    apply plugin: 'maven-publish'
     apply plugin: 'checkstyle'
+    apply plugin: 'maven-publish'
+    apply plugin: "com.google.cloud.artifactregistry.gradle-plugin"
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven {
+            url  "artifactregistry://europe-west2-maven.pkg.dev/cromulence/nexus"
+        }
+    }
+
+//    apply plugin: 'java'
+//    apply plugin: 'eclipse'
+//    apply plugin: 'idea'
+//    apply plugin: 'checkstyle'
+//    //apply plugin: 'travis-bintray'
+//    apply plugin: 'maven-publish'
+//    apply("com.google.cloud.artifactregistry.gradle-plugin")
 
     //apply plugin: 'nebula.lint'
 
@@ -88,13 +91,7 @@ subprojects {
         }
     }
 
-    repositories {
-        mavenLocal()
-        jcenter()
-        maven {
-            url "artifactregistry://europe-west2.maven.pkg.dev/cromulence/maven"
-        }
-    }
+
     
     test {
         testLogging {
@@ -102,14 +99,39 @@ subprojects {
             events 'skipped', 'failed'
         }
     }
-    if(System.env['JAVA_HOME'] == null){
-        throw new GradleException('JAVA_HOME not set')
-    }
+//    if(System.env['JAVA_HOME'] == null){
+//        throw new GradleException('JAVA_HOME not set')
+//    }
 
     if (project.plugins.hasPlugin('java')) {
         configurations {
             published
         }
+    }
+
+    // Insert following snippet into your build.gradle
+// see docs.gradle.org/current/userguide/publishing_maven.html
+
+
+
+    publishing {
+      repositories {
+        maven {
+          url "artifactregistry://europe-west2-maven.pkg.dev/cromulence/nexus"
+        }
+      }
+      publications {
+       mavenJava(MavenPublication) {
+          groupId  gavGroup
+          from components.java
+       }
+      }
+    }
+
+    repositories {
+      maven {
+        url "artifactregistry://europe-west2-maven.pkg.dev/cromulence/nexus"
+      }
     }
 }
 
@@ -117,6 +139,7 @@ configurations {
     published
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.12'
+wrapper {
+    gradleVersion = '7.6'
 }
+

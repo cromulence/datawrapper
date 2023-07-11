@@ -1,8 +1,8 @@
 apply plugin: 'java'
 
 dependencies {
-    compile project(':datawrapper-api')
-    compile 'org.slf4j:slf4j-api:1.7.21'
-    compile 'org.mongodb:mongo-java-driver:3.4.0'
-    compile 'com.google.code.gson:gson:2.2.4'
+    implementation project(':datawrapper-api')
+    implementation 'org.slf4j:slf4j-api:1.7.21'
+    implementation 'org.mongodb:mongo-java-driver:3.4.0'
+    implementation 'com.google.code.gson:gson:2.2.4'
 }
