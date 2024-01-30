@@ -2,5 +2,5 @@ apply plugin: 'java'
 
 dependencies {
     implementation 'com.google.code.gson:gson:2.2.4'
-    implementation 'net.cromulence:object-translator:1.9.6'
+    implementation 'net.cromulence.object-translator:object-translator:1.9.7'
 }
