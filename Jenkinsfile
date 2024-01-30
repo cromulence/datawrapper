@@ -14,28 +14,34 @@ pipeline {
     stages {
         stage('Build project') {
             steps {
-
+                withCredentials([file(credentialsId: gcpKeyId, variable: 'GC_KEY')]) {
+                    withEnv(["GOOGLE_APPLICATION_CREDENTIALS=${GC_KEY}"]) {
                withGradle {
                    sh "./gradlew --no-daemon -PgitCommit=${COMMIT_HASH} -PjenkinsBuild=${JENKINS_BUILD} clean assemble"
                }
+           }
+        }
            }
         }
 
         stage('Run Tests') {
             steps {
                 script {
+                    withCredentials([file(credentialsId: gcpKeyId, variable: 'GC_KEY')]) {
+                        withEnv(["GOOGLE_APPLICATION_CREDENTIALS=${GC_KEY}"]) {
                     withGradle {
                         sh "./gradlew --no-daemon -PgitCommit=${COMMIT_HASH} -PjenkinsBuild=${JENKINS_BUILD} test"
                     }
                 }
             }
         }
+            }
+        }
 
         stage('Publish') {
             steps {
                 script {
-                    withCredentials([file(credentialsId: 'cromulence-srvcacc-jsonAccessKey', variable: 'GC_KEY')]) {
-
+                    withCredentials([file(credentialsId: gcpKeyId, variable: 'GC_KEY')]) {
                         withEnv(["GOOGLE_APPLICATION_CREDENTIALS=${GC_KEY}"]) {
                             withGradle {
                                 sh "./gradlew --no-daemon -PgitCommit=${COMMIT_HASH} -PjenkinsBuild=${JENKINS_BUILD} publish"
