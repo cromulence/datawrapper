@@ -21,21 +21,6 @@ plugins {
     id "com.google.cloud.artifactregistry.gradle-plugin" version "2.2.1"
 }
 
-publishing {
-    repositories {
-        maven {
-            url "artifactregistry://europe-west2-maven.pkg.dev/cromulence/nexus"
-        }
-    }
-
-    publications {
-        mavenJava(MavenPublication) {
-            groupId  gavGroup
-            from components.java
-        }
-    }
-}
-
 repositories {
   maven {
     url "artifactregistry://europe-west2-maven.pkg.dev/cromulence/nexus"
@@ -140,6 +125,20 @@ subprojects {
 
     // Insert following snippet into your build.gradle
     // see docs.gradle.org/current/userguide/publishing_maven.html
+    publishing {
+    repositories {
+        maven {
+            url "artifactregistry://europe-west2-maven.pkg.dev/cromulence/nexus"
+        }
+    }
+
+    publications {
+        mavenJava(MavenPublication) {
+            groupId  gavGroup
+            from components.java
+        }
+    }
+}
 }
 
 configurations {
