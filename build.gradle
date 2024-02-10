@@ -113,7 +113,10 @@ subprojects {
         }
     }
 
-
+    java {
+        withSourcesJar()
+        withJavadocJar()
+    }
     
     test {
         testLogging {
@@ -129,12 +132,14 @@ subprojects {
     }
 
     // Insert following snippet into your build.gradle
-// see docs.gradle.org/current/userguide/publishing_maven.html
+    // see docs.gradle.org/current/userguide/publishing_maven.html
 
-    publications {
-        mavenJava(MavenPublication) {
-            groupId  gavGroup
-            from components.java
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                groupId  gavGroup
+                from components.java
+            }
         }
     }
 }
