@@ -1,5 +1,6 @@
 package net.cromulence.datawrapper.mongo;
 
+import java.lang.Deprecated;
 import net.cromulence.datawrapper.document.DocumentDataWrapperImpl;
 
 /**
@@ -9,6 +10,7 @@ import net.cromulence.datawrapper.document.DocumentDataWrapperImpl;
  * unavailable like this
  * @deprecated
  */
+@Deprecated
 public class MongoDataWrapperImpl extends DocumentDataWrapperImpl {
 
     public MongoDataWrapperImpl(MongoDataStoreConnector dataStore) {

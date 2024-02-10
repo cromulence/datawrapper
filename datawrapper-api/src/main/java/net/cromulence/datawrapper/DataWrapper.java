@@ -51,13 +51,13 @@ public interface DataWrapper {
 
     /**
      * Remove the specified value.
-     * @param name The key to remove
+     * @param name The key to remove from the datastore
      */
     void remove(String name);
 
     /**
      * Retrieve a String value
-     * @param name The name of the value to retrieve
+     * @param name The name of the value to retrieve from the datastore
      * @return The value
      */
     String getString(String name);
