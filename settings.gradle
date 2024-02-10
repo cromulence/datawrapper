@@ -1,6 +1,6 @@
 rootProject.name = 'datawrapper'
-rootProject.version = 0.10
-
+version = majorMinorVersion
+group = gavGroup
 // common classes and interfaces
 include ':datawrapper-api'
 
