@@ -1,19 +1,37 @@
+import java.text.SimpleDateFormat
+
 buildscript {
     repositories {
         mavenLocal()
         mavenCentral()
     }
+
     dependencies {
         classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.11.0'
         classpath 'gradle.plugin.co.riiid:gradle-github-plugin:0.4.2'   
     }
 }
 
+//plugins loaded from special gradle plugin repo...
 plugins {
     //google "gradle build scan" or https://github.com/gradle/gradle-build-scan-quickstart
     // essentially, ./gradlew build -Dscan
     id 'com.gradle.build-scan' version '1.0' //google "gradle build scan"
-    id "com.google.cloud.artifactregistry.gradle-plugin" version "2.2.0"
+    id "maven-publish"
+    id "com.google.cloud.artifactregistry.gradle-plugin" version "2.2.1"
+}
+
+publishing {
+  repositories {
+    maven {
+      url "artifactregistry://europe-west2-maven.pkg.dev/cromulence/nexus"
+    }
+  }
+}
+
+repositories {
+  maven {
+  }
 }
 
 allprojects {
@@ -24,6 +42,14 @@ allprojects {
     apply plugin: 'checkstyle'
     apply plugin: 'maven-publish'
     apply plugin: "com.google.cloud.artifactregistry.gradle-plugin"
+
+    publishing {
+        repositories {
+            maven {
+                url "artifactregistry://europe-west2-maven.pkg.dev/cromulence/nexus"
+            }
+        }
+    }
 
     repositories {
         mavenLocal()
