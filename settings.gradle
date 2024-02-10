@@ -1,4 +1,5 @@
 rootProject.name = 'datawrapper'
+rootProject.verson = 0.10
 
 // common classes and interfaces
 include ':datawrapper-api'
