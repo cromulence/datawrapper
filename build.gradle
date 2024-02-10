@@ -121,9 +121,6 @@ subprojects {
             events 'skipped', 'failed'
         }
     }
-//    if(System.env['JAVA_HOME'] == null){
-//        throw new GradleException('JAVA_HOME not set')
-//    }
 
     if (project.plugins.hasPlugin('java')) {
         configurations {
@@ -134,12 +131,11 @@ subprojects {
     // Insert following snippet into your build.gradle
 // see docs.gradle.org/current/userguide/publishing_maven.html
 
-      publications {
-       mavenJava(MavenPublication) {
-          groupId  gavGroup
-          from components.java
-       }
-      }
+    publications {
+        mavenJava(MavenPublication) {
+            groupId  gavGroup
+            from components.java
+        }
     }
 }
 
