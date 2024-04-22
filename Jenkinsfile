@@ -16,11 +16,11 @@ pipeline {
             steps {
                 withCredentials([file(credentialsId: gcpKeyId, variable: 'GC_KEY')]) {
                     withEnv(["GOOGLE_APPLICATION_CREDENTIALS=${GC_KEY}"]) {
-               withGradle {
-                   sh "./gradlew --no-daemon -PgitCommit=${COMMIT_HASH} -PjenkinsBuild=${JENKINS_BUILD} clean assemble"
+                        withGradle {
+                           sh "./gradlew --no-daemon -PgitCommit=${COMMIT_HASH} -PjenkinsBuild=${JENKINS_BUILD} clean assemble"
+                       }
+                   }
                }
-           }
-        }
            }
         }
 
@@ -29,12 +29,12 @@ pipeline {
                 script {
                     withCredentials([file(credentialsId: gcpKeyId, variable: 'GC_KEY')]) {
                         withEnv(["GOOGLE_APPLICATION_CREDENTIALS=${GC_KEY}"]) {
-                    withGradle {
-                        sh "./gradlew --no-daemon -PgitCommit=${COMMIT_HASH} -PjenkinsBuild=${JENKINS_BUILD} test"
-                    }
-                }
-            }
-        }
+                            withGradle {
+                               sh "./gradlew --no-daemon -PgitCommit=${COMMIT_HASH} -PjenkinsBuild=${JENKINS_BUILD} test"
+                           }
+                       }
+                   }
+               }
             }
         }
 

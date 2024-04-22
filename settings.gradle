@@ -6,6 +6,7 @@ include ':datawrapper-api'
 // Specific types of datastore connectors
 
 include ':implementations:dynamodb'
+include ':implementations:gcp-storage'
 include ':implementations:hashmap'
 include ':implementations:httpsession'
 include ':implementations:mongo'

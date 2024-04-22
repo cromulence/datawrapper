@@ -1,0 +1,11 @@
+apply plugin: 'java'
+
+dependencies {
+    implementation project(':datawrapper-api')
+    implementation 'org.slf4j:slf4j-api:1.7.21'
+
+    implementation platform('com.google.cloud:libraries-bom:26.37.0')
+
+    implementation 'com.google.cloud:google-cloud-storage'
+
+}
