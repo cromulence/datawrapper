@@ -2,6 +2,7 @@ package net.cromulence.datawrapper.properties;
 
 import net.cromulence.datawrapper.DataWrapperException;
 import net.cromulence.datawrapper.AbstractStringToStringDataStoreConnector;
+import net.cromulence.datawrapper.DataWrapperImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,14 +10,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Properties;
+import java.util.*;
 
 public class PropertiesFileDataStoreConnector extends AbstractStringToStringDataStoreConnector {
     private static final Logger LOG = LoggerFactory.getLogger(PropertiesFileDataStoreConnector.class);
 
     private final File propertiesFile;
 
-    private final Properties properties;
+    private final SortedProperties properties;
 
     private final boolean autoCommit;
 
@@ -29,7 +30,7 @@ public class PropertiesFileDataStoreConnector extends AbstractStringToStringData
         this.propertiesFile = propertiesFile;
         this.autoCommit = autoCommit;
         LOG.info("Reading database properties file " + propertiesFile.getName());
-        properties = new Properties();
+        properties = new SortedProperties();
         try {
             properties.load(new FileInputStream(propertiesFile));
         } catch (Exception e) {
@@ -79,6 +80,38 @@ public class PropertiesFileDataStoreConnector extends AbstractStringToStringData
             } catch (DataWrapperException e) {
                 throw new IllegalStateException("Error autocommitting", e);
             }
+        }
+    }
+
+    private class SortedProperties extends Properties {
+        @Override
+        public Set<Object> keySet() {
+            return Collections.unmodifiableSet(new TreeSet<Object>(super.keySet()));
+        }
+
+        @Override
+        public Set<Map.Entry<Object, Object>> entrySet() {
+
+            Set<Map.Entry<Object, Object>> set1 = super.entrySet();
+            Set<Map.Entry<Object, Object>> set2 = new LinkedHashSet<Map.Entry<Object, Object>>(set1.size());
+
+            Iterator<Map.Entry<Object, Object>> iterator = set1.stream().sorted(new Comparator<Map.Entry<Object, Object>>() {
+
+                @Override
+                public int compare(java.util.Map.Entry<Object, Object> o1, java.util.Map.Entry<Object, Object> o2) {
+                    return o1.getKey().toString().compareTo(o2.getKey().toString());
+                }
+            }).iterator();
+
+            while (iterator.hasNext())
+                set2.add(iterator.next());
+
+            return set2;
+        }
+
+        @Override
+        public synchronized Enumeration<Object> keys() {
+            return Collections.enumeration(new TreeSet<Object>(super.keySet()));
         }
     }
 }
