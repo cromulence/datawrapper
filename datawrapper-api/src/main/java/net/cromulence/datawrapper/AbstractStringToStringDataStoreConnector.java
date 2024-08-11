@@ -3,6 +3,7 @@ package net.cromulence.datawrapper;
 import com.google.gson.Gson;
 import org.webpieces.router.impl.params.ObjectTranslator;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -31,19 +32,8 @@ public abstract class AbstractStringToStringDataStoreConnector extends AbstractD
 
     @Override
     public final Object get(String name) {
-        final String wrappedStringValue = doGet(name);
-
-        if(wrappedStringValue == null || wrappedStringValue.isEmpty()) {
-            return null;
-        }
-
-        final StringWrappedValue swv;
-
-        try {
-            swv = gson.fromJson(wrappedStringValue, StringWrappedValue.class);
-        } catch(Throwable t) {
-            throw new DataWrapperRuntimeException("Unable to deserialise to " + StringWrappedValue.class.getName() + "\n" + wrappedStringValue, t);
-        }
+        final StringWrappedValue swv = getStringWrappedValue(name);
+        if (swv == null) return null;
 
         try {
             final Class<?> aClass = Class.forName(swv.type);
@@ -64,11 +54,34 @@ public abstract class AbstractStringToStringDataStoreConnector extends AbstractD
         }
     }
 
+    private StringWrappedValue getStringWrappedValue(String name) {
+        final String wrappedStringValue = doGet(name);
+
+        if(wrappedStringValue == null || wrappedStringValue.isEmpty()) {
+            return null;
+        }
+
+        final StringWrappedValue swv;
+
+        try {
+            swv = gson.fromJson(wrappedStringValue, StringWrappedValue.class);
+        } catch(Throwable t) {
+            throw new DataWrapperRuntimeException("Unable to deserialise to " + StringWrappedValue.class.getName() + "\n" + wrappedStringValue, t);
+        }
+        return swv;
+    }
+
     @Override
     public final void put(String name, Object value)
     {
-        final StringWrappedValue swv = new StringWrappedValue();
+        StringWrappedValue swv = getStringWrappedValue(name);
+
+        if(swv == null) {
+            swv = new StringWrappedValue();
+        }
         swv.type = value.getClass().getName();
+        swv.version++;
+        swv.timestamp = LocalDateTime.now();
 
         final Function<Object, String> marshaller = ObjectTranslator.getMarshaller(value.getClass());
 
@@ -87,5 +100,7 @@ public abstract class AbstractStringToStringDataStoreConnector extends AbstractD
     private static class StringWrappedValue {
         String type;
         String value;
+        int version = 0;
+        LocalDateTime timestamp = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
     }
 }
