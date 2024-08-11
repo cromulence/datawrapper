@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import org.webpieces.router.impl.params.ObjectTranslator;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -81,7 +82,7 @@ public abstract class AbstractStringToStringDataStoreConnector extends AbstractD
         }
         swv.type = value.getClass().getName();
         swv.version++;
-        swv.timestamp = LocalDateTime.now();
+        swv.timestamp = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
         final Function<Object, String> marshaller = ObjectTranslator.getMarshaller(value.getClass());
 
@@ -101,6 +102,6 @@ public abstract class AbstractStringToStringDataStoreConnector extends AbstractD
         String type;
         String value;
         int version = 0;
-        LocalDateTime timestamp = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
+        String timestamp = LocalDateTime.of(1970, 1, 1, 0, 0, 0).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 }
