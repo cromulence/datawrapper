@@ -9,14 +9,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Properties;
+import java.util.*;
 
 public class PropertiesFileDataStoreConnector extends AbstractStringToStringDataStoreConnector {
     private static final Logger LOG = LoggerFactory.getLogger(PropertiesFileDataStoreConnector.class);
 
     private final File propertiesFile;
 
-    private final Properties properties;
+    private final SortedProperties properties;
 
     private final boolean autoCommit;
 
@@ -29,7 +29,7 @@ public class PropertiesFileDataStoreConnector extends AbstractStringToStringData
         this.propertiesFile = propertiesFile;
         this.autoCommit = autoCommit;
         LOG.info("Reading database properties file " + propertiesFile.getName());
-        properties = new Properties();
+        properties = new SortedProperties();
         try {
             properties.load(new FileInputStream(propertiesFile));
         } catch (Exception e) {
@@ -79,6 +79,19 @@ public class PropertiesFileDataStoreConnector extends AbstractStringToStringData
             } catch (DataWrapperException e) {
                 throw new IllegalStateException("Error autocommitting", e);
             }
+        }
+    }
+
+    private class SortedProperties extends Properties {
+        @Override
+        public Enumeration keys() {
+            Enumeration keysEnum = super.keys();
+            Vector<String> keyList = new Vector<String>();
+            while(keysEnum.hasMoreElements()){
+                keyList.add((String)keysEnum.nextElement());
+            }
+            Collections.sort(keyList);
+            return keyList.elements();
         }
     }
 }
