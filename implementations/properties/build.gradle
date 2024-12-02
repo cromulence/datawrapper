@@ -3,4 +3,6 @@ apply plugin: 'java'
 dependencies {
     implementation project(':datawrapper-api')
     implementation 'org.slf4j:slf4j-api:1.7.21'
+    implementation 'nu.studer:java-ordered-properties:1.0.4'
+
 }
